@@ -45,10 +45,10 @@ void ComplaintSystem::loadFromFile()
         int id;
         string email, category, text, stat;
 
-        if (!(file >> id))   // if reading ID fails -> stop
+        if (!(file >> id))  
             break;
 
-        file.ignore();       // remove leftover newline
+        file.ignore();      
         getline(file, email);
         getline(file, category);
         getline(file, text);

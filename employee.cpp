@@ -29,43 +29,56 @@ EmployeeSystem::EmployeeSystem()
 
 void EmployeeSystem::loadFromFile()
 {
-    ifstream in("complaints.txt");
-    if (!in.is_open())
-    {
-        cout << "No complaint file found.\n";
+    ifstream file("complaints.txt");
+    if (!file)
         return;
-    }
 
     count = 0;
 
-    while (in >> ids[count])
+    while (true)
     {
-        in.ignore();
-        getline(in, emails[count]);
-        getline(in, categories[count]);
-        getline(in, texts[count]);
-        getline(in, status[count]);
+        int id;
+        string email, category, text, stat;
+
+        if (!(file >> id))  // if reading ID fails -> stop
+            break;
+
+        file.ignore();      // remove leftover newline
+        getline(file, email);
+        getline(file, category);
+        getline(file, text);
+        getline(file, stat);
+
+        ids[count] = id;
+        emails[count] = email;
+        categories[count] = category;
+        texts[count] = text;
+        status[count] = stat;
+
         count++;
     }
-
-    in.close();
 }
+
 
 void EmployeeSystem::saveToFile()
 {
-    ofstream out("complaints.txt");
+    ofstream file("complaints.txt");
+    if (!file)
+    {
+        cout << "Error saving file!\n";
+        return;
+    }
 
     for (int i = 0; i < count; i++)
     {
-        out << ids[i] << "\n";
-        out << emails[i] << "\n";
-        out << categories[i] << "\n";
-        out << texts[i] << "\n";
-        out << status[i] << "\n";
+        file << ids[i] << "\n";
+        file << emails[i] << "\n";
+        file << categories[i] << "\n";
+        file << texts[i] << "\n";
+        file << status[i] << "\n";
     }
-
-    out.close();
 }
+
 
 void EmployeeSystem::showNextPending()
 {
